@@ -45,6 +45,8 @@
 
 #include <QtGui/QMovie>
 #include <QtWidgets/QWidget>
+#include <syllabemanager.h>
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 class QAbstractButton;
@@ -61,6 +63,7 @@ public:
 
 public slots:
     void openFile();
+    void openLyr();
     void play();
 
 private slots:
@@ -71,9 +74,13 @@ private slots:
     void handleError();
 
 private:
+    void mousePressEvent(QMouseEvent * e);
+    void mouseReleaseEvent(QMouseEvent * e);
     QMediaPlayer mediaPlayer;
     QAbstractButton *playButton;
+    QPushButton addLyrButton;
     QSlider *positionSlider;
+    SyllabeManager syllabes;
     QLabel *errorLabel;
 };
 

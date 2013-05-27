@@ -48,6 +48,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     : QWidget(parent)
     , mediaPlayer(0, QMediaPlayer::VideoSurface)
     , playButton(0)
+    , addLyrButton("Open lyrics")
     , positionSlider(0)
     , errorLabel(0)
 {
@@ -55,6 +56,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
     QAbstractButton *openButton = new QPushButton(tr("Open..."));
     connect(openButton, SIGNAL(clicked()), this, SLOT(openFile()));
+    connect(&addLyrButton, SIGNAL(clicked()), this, SLOT(openLyr()));
 
     playButton = new QPushButton;
     playButton->setEnabled(false);
@@ -75,6 +77,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     QBoxLayout *controlLayout = new QHBoxLayout;
     controlLayout->setMargin(0);
     controlLayout->addWidget(openButton);
+    controlLayout->addWidget(&addLyrButton);
     controlLayout->addWidget(playButton);
     controlLayout->addWidget(positionSlider);
 
@@ -95,6 +98,14 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
 VideoPlayer::~VideoPlayer()
 {
+}
+
+void VideoPlayer::openLyr()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Movie"),QDir::homePath());
+    if (!fileName.isEmpty()) {
+        syllabes.open(fileName);
+    }
 }
 
 void VideoPlayer::openFile()
@@ -152,4 +163,14 @@ void VideoPlayer::handleError()
 {
     playButton->setEnabled(false);
     errorLabel->setText("Error: " + mediaPlayer.errorString());
+}
+
+void VideoPlayer::mousePressEvent(QMouseEvent *)
+{
+    qDebug() << "not release" << mediaPlayer.position();
+}
+
+void VideoPlayer::mouseReleaseEvent(QMouseEvent *)
+{
+    qDebug() << "release" << mediaPlayer.position();
 }
