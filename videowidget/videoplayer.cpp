@@ -115,6 +115,9 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
 VideoPlayer::~VideoPlayer()
 {
+    delete positionSlider;
+    delete errorLabel;
+    delete rateSlider;
 }
 
 void VideoPlayer::openLyr()
