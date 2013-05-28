@@ -132,6 +132,7 @@ void VideoPlayer::openLyr()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Movie"),QDir::homePath());
     if (!fileName.isEmpty()) {
         syllabes.open(fileName);
+         lyrFile = fileName;
     }
 }
 
@@ -221,6 +222,11 @@ void VideoPlayer::keyPressEvent(QKeyEvent * e)
     if (e->key()==Qt::Key_O) {
         prevSyllabe();
     }
+    if (e->key()==Qt::Key_I) {
+        syllabes.saveFrmToFile(lyrFile);
+        genereASS(lyrFile);
+    }
+
 }
 
 void VideoPlayer::keyReleaseEvent(QKeyEvent * e)
@@ -267,4 +273,15 @@ void VideoPlayer::prevSyllabe()
                     syllabes.manager()[currentSyllabe].getRelativePosition()
                     , false)
     );
+}
+
+void VideoPlayer::genereASS(QString fileLyr)
+{
+  QProcess *p = new QProcess();
+  QStringList args;
+  args << fileLyr;
+  args << QString::number(1000.0,'f',6);
+  qDebug() << args;;
+  //p->setStandardOutputFile("tool/a.ass");
+  p->execute("lecheminvers\\toy2ass.exe",args);
 }

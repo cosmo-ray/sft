@@ -2,6 +2,7 @@
 #include <QTextStream>
 #include <QStringList>
 #include <QDebug>
+#include <QFileInfo>
 #include "syllabemanager.h"
 
 SyllabeManager::SyllabeManager()
@@ -48,6 +49,20 @@ void SyllabeManager::open(const QString &lyrFile)
         line = in.readLine();
     }
     _isOpen = true;
+}
+
+void SyllabeManager::saveFrmToFile(QString lyrFile)
+{
+    QFileInfo fi(lyrFile);
+    QString frmFile = fi.absolutePath()+ "/" + fi.completeBaseName()+".frm";
+    qDebug() << frmFile;
+    QFile file(frmFile);
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+    for(int i = 0; i < _manager.size(); ++i) {
+        out << _manager[i].getStart() << " " << _manager[i].getEnd() << "\n";
+    }
+    file.close();
 }
 
 QVector<Syllabe> &SyllabeManager::manager()

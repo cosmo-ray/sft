@@ -79,6 +79,7 @@ private slots:
     void endSyllabe();
     void startSyllabe();
     void prevSyllabe();
+    void genereASS(QString);
 
 private:
     void mousePressEvent(QMouseEvent * e);
@@ -93,6 +94,7 @@ private:
     QLabel theSentence;
     int currentSyllabe;
     QSlider *rateSlider;
+    QString lyrFile;
 };
 
 #endif
