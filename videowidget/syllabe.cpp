@@ -1,4 +1,5 @@
 #include "syllabe.h"
+#include <QDebug>
 
 Syllabe::Syllabe()
 {
@@ -42,4 +43,14 @@ void Syllabe::setSyllabe(const QString &str)
 const QString &Syllabe::getSyllabe(void)
 {
     return (_syllabe);
+}
+
+void Syllabe::setRelativePosition(int pos)
+{
+    _relativePosition = pos;
+}
+
+int Syllabe::getRelativePosition(void)
+{
+    return (_relativePosition);
 }

@@ -8,6 +8,7 @@ class Sentence
 {
 public:
     Sentence();
+    QString toString(int, bool);
     QVector<Syllabe *> sentence;
 private:
 };

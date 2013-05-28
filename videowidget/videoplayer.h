@@ -47,6 +47,7 @@
 #include <QtWidgets/QWidget>
 #include <syllabemanager.h>
 #include <QPushButton>
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 class QAbstractButton;
@@ -82,6 +83,7 @@ private:
     QSlider *positionSlider;
     SyllabeManager syllabes;
     QLabel *errorLabel;
+    QLabel theSentence;
     int currentSyllabe;
 };
 

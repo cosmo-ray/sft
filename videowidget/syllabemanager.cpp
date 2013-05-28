@@ -17,9 +17,10 @@ bool SyllabeManager::isOpen()
 void SyllabeManager::open(const QString &lyrFile)
 {
     QFile file(lyrFile);
-
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream in(&file);
+    _manager.resize(in.readAll().count("&"));
+    file.reset();
     QString line = in.readLine();
     int lineIndex = 0;
     int syllabeIndex = 0;
@@ -29,16 +30,16 @@ void SyllabeManager::open(const QString &lyrFile)
         if (list1.size() > 1)
         {
             list1.pop_front();
-            _manager.resize(_manager.size() + list1.size());
             _sentenceManager.resize(_sentenceManager.size() + 1);
             Sentence &sen = _sentenceManager[lineIndex];
             sen.sentence.resize(list1.size());
             for(int i = 0; i < list1.size(); ++i)
             {
-                Syllabe &syl =  _manager[syllabeIndex];
-                syl.setSyllabe(list1[i]);
-                sen.sentence[i] = &syl;
-                syl.setSentence(lineIndex);
+                Syllabe *syl =  &_manager[syllabeIndex];
+                syl->setSyllabe(list1[i]);
+                syl->setRelativePosition(i);
+                sen.sentence[i] = syl;
+                syl->setSentence(lineIndex);
                 qDebug() << sen.sentence[i]->getSyllabe();
                 ++syllabeIndex;
             }

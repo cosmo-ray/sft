@@ -40,6 +40,7 @@
 
 #include "videoplayer.h"
 
+#include <QDebug>
 #include <QtWidgets>
 #include <qvideowidget.h>
 #include <qvideosurfaceformat.h>
@@ -52,6 +53,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     , positionSlider(0)
     , errorLabel(0)
     , currentSyllabe(0)
+    , theSentence("open a lyr file and a video")
 {
     QVideoWidget *videoWidget = new QVideoWidget;
 
@@ -85,6 +87,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     QBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(videoWidget);
     layout->addLayout(controlLayout);
+    layout->addWidget(&theSentence);
     layout->addWidget(errorLabel);
 
     setLayout(layout);
@@ -170,6 +173,11 @@ void VideoPlayer::mousePressEvent(QMouseEvent *)
 {
     if (!syllabes.isOpen())
         return ;
+    theSentence.setText(
+                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
+                    syllabes.manager()[currentSyllabe].getRelativePosition()
+                    , true)
+    );
     syllabes.manager()[currentSyllabe].setStart(mediaPlayer.position());
     qDebug() << "not release" << mediaPlayer.position();
 }
@@ -181,4 +189,9 @@ void VideoPlayer::mouseReleaseEvent(QMouseEvent *)
     syllabes.manager()[currentSyllabe].setEnd(mediaPlayer.position());
     qDebug() << "release" << mediaPlayer.position();
     ++currentSyllabe;
+    theSentence.setText(
+                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
+                    syllabes.manager()[currentSyllabe].getRelativePosition()
+                    , false)
+    );
 }
