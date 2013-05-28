@@ -74,6 +74,7 @@ private slots:
     void setPosition(int position);
     void handleError();
     void setFrameRate(int);
+    void keyPressEvent(QKeyEvent * e);
 
 private:
     void mousePressEvent(QMouseEvent * e);

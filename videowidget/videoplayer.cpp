@@ -209,3 +209,10 @@ void VideoPlayer::mouseReleaseEvent(QMouseEvent *)
                     , false)
     );
 }
+
+void VideoPlayer::keyPressEvent(QKeyEvent * e)
+{
+    if (e->key()==Qt::Key_Backspace) {
+        mediaPlayer.setPosition(mediaPlayer.position()-2000);
+    }
+}
