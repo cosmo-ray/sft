@@ -50,6 +50,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     , mediaPlayer(0, QMediaPlayer::VideoSurface)
     , playButton(0)
     , addLyrButton("Open lyrics")
+    , convert("convert")
     , positionSlider(0)
     , errorLabel(0)
     , theSentence("open a lyr file and a video")
@@ -90,10 +91,14 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
     QBoxLayout *controlLayout = new QHBoxLayout;
     controlLayout->setMargin(0);
-    controlLayout->addWidget(openButton);
-    controlLayout->addWidget(&addLyrButton);
     controlLayout->addWidget(playButton);
     controlLayout->addWidget(positionSlider);
+
+    QBoxLayout *controlLayout2 = new QHBoxLayout;
+    controlLayout2->setMargin(0);
+    controlLayout2->addWidget(openButton);
+    controlLayout2->addWidget(&addLyrButton);
+    controlLayout2->addWidget(&convert);
 
     QBoxLayout *layout = new QVBoxLayout;
     QBoxLayout *test = new QHBoxLayout;
@@ -101,6 +106,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     test->addWidget(rateSlider);
     layout->addLayout(test);
     layout->addLayout(controlLayout);
+    layout->addLayout(controlLayout2);
     layout->addWidget(&theSentence);
     layout->addWidget(errorLabel);
 

@@ -86,6 +86,7 @@ private:
     QMediaPlayer mediaPlayer;
     QAbstractButton *playButton;
     QPushButton addLyrButton;
+    QPushButton convert;
     QSlider *positionSlider;
     SyllabeManager syllabes;
     QLabel *errorLabel;
