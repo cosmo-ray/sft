@@ -10,6 +10,8 @@ class SyllabeManager
 public:
     SyllabeManager();
     bool isOpen();
+    QVector<Syllabe> &manager();
+    QVector<Sentence> &sentenceManager();
 
     void open(const QString &lyrFile);
 private:

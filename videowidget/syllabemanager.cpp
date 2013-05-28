@@ -48,3 +48,13 @@ void SyllabeManager::open(const QString &lyrFile)
     }
     _isOpen = true;
 }
+
+QVector<Syllabe> &SyllabeManager::manager()
+{
+    return (_manager);
+}
+
+QVector<Sentence> &SyllabeManager::sentenceManager()
+{
+    return (_sentenceManager);
+}

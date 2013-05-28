@@ -51,6 +51,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     , addLyrButton("Open lyrics")
     , positionSlider(0)
     , errorLabel(0)
+    , currentSyllabe(0)
 {
     QVideoWidget *videoWidget = new QVideoWidget;
 
@@ -167,10 +168,17 @@ void VideoPlayer::handleError()
 
 void VideoPlayer::mousePressEvent(QMouseEvent *)
 {
+    if (!syllabes.isOpen())
+        return ;
+    syllabes.manager()[currentSyllabe].setStart(mediaPlayer.position());
     qDebug() << "not release" << mediaPlayer.position();
 }
 
 void VideoPlayer::mouseReleaseEvent(QMouseEvent *)
 {
+    if (!syllabes.isOpen())
+        return ;
+    syllabes.manager()[currentSyllabe].setEnd(mediaPlayer.position());
     qDebug() << "release" << mediaPlayer.position();
+    ++currentSyllabe;
 }

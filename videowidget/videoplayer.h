@@ -82,6 +82,7 @@ private:
     QSlider *positionSlider;
     SyllabeManager syllabes;
     QLabel *errorLabel;
+    int currentSyllabe;
 };
 
 #endif
