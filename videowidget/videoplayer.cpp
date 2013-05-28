@@ -71,6 +71,12 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     positionSlider = new QSlider(Qt::Horizontal);
     positionSlider->setRange(0, 0);
 
+    rateSlider = new QSlider(Qt::Vertical);
+    rateSlider->setRange(0,40);
+    rateSlider->setValue(20);
+
+    connect(rateSlider, SIGNAL(sliderMoved(int)),this, SLOT(setFrameRate(int)));
+
     connect(positionSlider, SIGNAL(sliderMoved(int)),
             this, SLOT(setPosition(int)));
 
@@ -85,7 +91,10 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     controlLayout->addWidget(positionSlider);
 
     QBoxLayout *layout = new QVBoxLayout;
-    layout->addWidget(videoWidget);
+    QBoxLayout *test = new QHBoxLayout;
+    test->addWidget(videoWidget);
+    test->addWidget(rateSlider);
+    layout->addLayout(test);
     layout->addLayout(controlLayout);
     layout->addWidget(&theSentence);
     layout->addWidget(errorLabel);
@@ -161,6 +170,11 @@ void VideoPlayer::durationChanged(qint64 duration)
 void VideoPlayer::setPosition(int position)
 {
     mediaPlayer.setPosition(position);
+}
+
+void VideoPlayer::setFrameRate(int fr)
+{
+    mediaPlayer.setPlaybackRate(0.05*fr);
 }
 
 void VideoPlayer::handleError()

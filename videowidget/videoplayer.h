@@ -73,6 +73,7 @@ private slots:
     void durationChanged(qint64 duration);
     void setPosition(int position);
     void handleError();
+    void setFrameRate(int);
 
 private:
     void mousePressEvent(QMouseEvent * e);
@@ -85,6 +86,7 @@ private:
     QLabel *errorLabel;
     QLabel theSentence;
     int currentSyllabe;
+    QSlider *rateSlider;
 };
 
 #endif
