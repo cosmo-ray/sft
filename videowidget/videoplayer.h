@@ -80,6 +80,10 @@ private slots:
     void startSyllabe();
     void prevSyllabe();
     void genereASS(QString);
+    void dropEvent(QDropEvent * e);
+    void dragEnterEvent(QDragEnterEvent * e);
+    void loadMedia(const QString &vidFile);
+
 
 private:
     void mousePressEvent(QMouseEvent * e);
@@ -94,6 +98,7 @@ private:
     int currentSyllabe;
     QSlider *rateSlider;
     QString lyrFile;
+    QString vidFile;
 };
 
 #endif
