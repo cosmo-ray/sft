@@ -185,6 +185,54 @@ void VideoPlayer::handleError()
 
 void VideoPlayer::mousePressEvent(QMouseEvent *)
 {
+    startSyllabe();
+    qDebug() << "not release" << mediaPlayer.position();
+}
+
+void VideoPlayer::mouseReleaseEvent(QMouseEvent *)
+{
+
+    qDebug() << "release" << mediaPlayer.position();
+    endSyllabe();
+}
+
+void VideoPlayer::keyPressEvent(QKeyEvent * e)
+{
+    if (e->key()==Qt::Key_Backspace) {
+        mediaPlayer.setPosition(mediaPlayer.position()-2000);
+    }
+    if (e->key()==Qt::Key_P) {
+        startSyllabe();
+    }
+    if (e->key()==Qt::Key_O) {
+        prevSyllabe();
+    }
+}
+
+void VideoPlayer::keyReleaseEvent(QKeyEvent * e)
+{
+    if (e->key()==Qt::Key_P) {
+        endSyllabe();
+    }
+
+}
+
+void VideoPlayer::endSyllabe()
+{
+    if (!syllabes.isOpen())
+        return ;
+    syllabes.manager()[currentSyllabe].setEnd(mediaPlayer.position());
+    ++currentSyllabe;
+    if (currentSyllabe>=syllabes.manager().size())
+        --currentSyllabe;
+    theSentence.setText(
+                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
+                    syllabes.manager()[currentSyllabe].getRelativePosition()
+                    , false)
+    );
+}
+
+void VideoPlayer::startSyllabe() {
     if (!syllabes.isOpen())
         return ;
     theSentence.setText(
@@ -193,26 +241,16 @@ void VideoPlayer::mousePressEvent(QMouseEvent *)
                     , true)
     );
     syllabes.manager()[currentSyllabe].setStart(mediaPlayer.position());
-    qDebug() << "not release" << mediaPlayer.position();
 }
 
-void VideoPlayer::mouseReleaseEvent(QMouseEvent *)
+void VideoPlayer::prevSyllabe()
 {
-    if (!syllabes.isOpen())
-        return ;
-    syllabes.manager()[currentSyllabe].setEnd(mediaPlayer.position());
-    qDebug() << "release" << mediaPlayer.position();
-    ++currentSyllabe;
+    --currentSyllabe;
+    if (currentSyllabe<0)
+        currentSyllabe=0;
     theSentence.setText(
                 syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
                     syllabes.manager()[currentSyllabe].getRelativePosition()
                     , false)
     );
-}
-
-void VideoPlayer::keyPressEvent(QKeyEvent * e)
-{
-    if (e->key()==Qt::Key_Backspace) {
-        mediaPlayer.setPosition(mediaPlayer.position()-2000);
-    }
 }
