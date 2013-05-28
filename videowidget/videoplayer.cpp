@@ -52,12 +52,16 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     , addLyrButton("Open lyrics")
     , positionSlider(0)
     , errorLabel(0)
-    , currentSyllabe(0)
     , theSentence("open a lyr file and a video")
+    , currentSyllabe(0)
 {
     QVideoWidget *videoWidget = new QVideoWidget;
 
     QAbstractButton *openButton = new QPushButton(tr("Open..."));
+
+    setWindowTitle("Sailor Fuku Timer");
+    setWindowIcon(QIcon("resources/sfhd.jpg"));
+
     connect(openButton, SIGNAL(clicked()), this, SLOT(openFile()));
     connect(&addLyrButton, SIGNAL(clicked()), this, SLOT(openLyr()));
 
