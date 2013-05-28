@@ -75,14 +75,15 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     positionSlider = new QSlider(Qt::Horizontal);
     positionSlider->setRange(0, 0);
 
+    connect(positionSlider, SIGNAL(sliderMoved(int)),
+            this, SLOT(setPosition(int)));
+
     rateSlider = new QSlider(Qt::Vertical);
     rateSlider->setRange(0,40);
     rateSlider->setValue(20);
 
     connect(rateSlider, SIGNAL(sliderMoved(int)),this, SLOT(setFrameRate(int)));
 
-    connect(positionSlider, SIGNAL(sliderMoved(int)),
-            this, SLOT(setPosition(int)));
 
     errorLabel = new QLabel;
     errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
