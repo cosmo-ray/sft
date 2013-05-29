@@ -82,6 +82,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
     rateSlider = new QSlider(Qt::Vertical);
     rateSlider->setRange(0,40);
+    setFrameRate(20);
     rateSlider->setValue(20);
 
     connect(rateSlider, SIGNAL(sliderMoved(int)),this, SLOT(setFrameRate(int)));
@@ -89,8 +90,11 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     volumeSlider = new QSlider(Qt::Vertical);
     volumeSlider->setRange(0, 100);
     volumeSlider->setValue(100);
+   setVolume(100);
 
     connect(volumeSlider, SIGNAL(sliderMoved(int)),this, SLOT(setVolume(int)));
+
+
 
 
     errorLabel = new QLabel;
@@ -110,8 +114,14 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     QBoxLayout *layout = new QVBoxLayout;
     QBoxLayout *test = new QHBoxLayout;
     test->addWidget(videoWidget);
-    test->addWidget(volumeSlider);
-    test->addWidget(rateSlider);
+    QBoxLayout *volbox = new QVBoxLayout;
+    volbox->addWidget(&_volume);
+    volbox->addWidget(volumeSlider);
+    test->addLayout(volbox);
+    QBoxLayout *ratebox = new QVBoxLayout;
+    ratebox->addWidget(&_playrate);
+    ratebox->addWidget(rateSlider);
+    test->addLayout(ratebox);
     layout->addLayout(test);
     layout->addLayout(controlLayout);
     layout->addLayout(controlLayout2);
@@ -205,11 +215,13 @@ void VideoPlayer::setPosition(int position)
 void VideoPlayer::setFrameRate(int fr)
 {
     mediaPlayer.setPlaybackRate(0.05*fr);
+    _playrate.setText(QString::number(fr*0.05));
 }
 
 void VideoPlayer::setVolume(int vol)
 {
     mediaPlayer.setVolume(vol);
+    _volume.setText(QString::number(vol));
 }
 
 void VideoPlayer::handleError()
@@ -236,11 +248,14 @@ void VideoPlayer::keyPressEvent(QKeyEvent * e)
     if (e->key()==Qt::Key_Backspace) {
         mediaPlayer.setPosition(mediaPlayer.position()-2000);
     }
-    if (e->key()==Qt::Key_P) {
+    if (e->key()==Qt::Key_T) {
         startSyllabe();
     }
     if (e->key()==Qt::Key_O) {
         prevSyllabe();
+    }
+    if (e->key()==Qt::Key_P) {
+        nextSyllabe();
     }
     if (e->key()==Qt::Key_I) {
         syllabes.saveFrmToFile(lyrFile);
@@ -251,7 +266,7 @@ void VideoPlayer::keyPressEvent(QKeyEvent * e)
 
 void VideoPlayer::keyReleaseEvent(QKeyEvent * e)
 {
-    if (e->key()==Qt::Key_P) {
+    if (e->key()==Qt::Key_T) {
         endSyllabe();
     }
 
@@ -288,6 +303,18 @@ void VideoPlayer::prevSyllabe()
     --currentSyllabe;
     if (currentSyllabe<0)
         currentSyllabe=0;
+    theSentence.setText(
+                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
+                    syllabes.manager()[currentSyllabe].getRelativePosition()
+                    , false)
+    );
+}
+
+void VideoPlayer::nextSyllabe()
+{
+    ++currentSyllabe;
+    if (currentSyllabe>=syllabes.manager().size())
+        --currentSyllabe;
     theSentence.setText(
                 syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
                     syllabes.manager()[currentSyllabe].getRelativePosition()

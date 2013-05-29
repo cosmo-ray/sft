@@ -81,6 +81,7 @@ private slots:
     void endSyllabe();
     void startSyllabe();
     void prevSyllabe();
+    void nextSyllabe();
     void genereASS(QString);
     void dropEvent(QDropEvent * e);
     void dragEnterEvent(QDragEnterEvent * e);
@@ -104,6 +105,8 @@ private:
     QSlider *volumeSlider;
     QString lyrFile;
     QString vidFile;
+    QLabel _volume;
+    QLabel _playrate;
 };
 
 #endif
