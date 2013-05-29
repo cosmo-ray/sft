@@ -67,20 +67,26 @@ public slots:
     void openLyr();
     void play();
 
-    private slots:
-      void mediaStateChanged(QMediaPlayer::State state);
-      void positionChanged(qint64 position);
-      void durationChanged(qint64 duration);
-      void setPosition(int position);
-      void handleError();
-      void setFrameRate(int);
-      void setVolume(int);
-      void keyPressEvent(QKeyEvent * e);
-      void keyReleaseEvent(QKeyEvent * e);
-      void endSyllabe();
-      void startSyllabe();
-      void prevSyllabe();
-      void genereASS(QString);
+
+
+private slots:
+    void mediaStateChanged(QMediaPlayer::State state);
+    void positionChanged(qint64 position);
+    void durationChanged(qint64 duration);
+    void setPosition(int position);
+    void handleError();
+    void setFrameRate(int);
+    void keyPressEvent(QKeyEvent * e);
+        void keyReleaseEvent(QKeyEvent * e);
+    void endSyllabe();
+    void startSyllabe();
+    void prevSyllabe();
+    void genereASS(QString);
+    void dropEvent(QDropEvent * e);
+    void dragEnterEvent(QDragEnterEvent * e);
+    void loadMedia(const QString &vidFile);
+void setVolume(int vol);
+
 
 private:
     void mousePressEvent(QMouseEvent * e);
@@ -97,6 +103,7 @@ private:
     QSlider *rateSlider;
     QSlider *volumeSlider;
     QString lyrFile;
+    QString vidFile;
 };
 
 #endif

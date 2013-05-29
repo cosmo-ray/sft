@@ -62,6 +62,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
     setWindowTitle("Sailor Fuku Timer");
     setWindowIcon(QIcon("resources/sfhd.jpg"));
+    setAcceptDrops(true);
 
     connect(openButton, SIGNAL(clicked()), this, SLOT(openFile()));
     connect(&addLyrButton, SIGNAL(clicked()), this, SLOT(openLyr()));
@@ -150,10 +151,17 @@ void VideoPlayer::openFile()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Movie"),QDir::homePath());
 
     if (!fileName.isEmpty()) {
-        mediaPlayer.setMedia(QUrl::fromLocalFile(fileName));
-        playButton->setEnabled(true);
+        vidFile=fileName;
+        loadMedia(fileName);
     }
 }
+
+void VideoPlayer::loadMedia(const QString &vidFile)
+{
+    mediaPlayer.setMedia(QUrl::fromLocalFile(vidFile));
+    playButton->setEnabled(true);
+}
+
 
 void VideoPlayer::play()
 {
@@ -296,3 +304,42 @@ void VideoPlayer::genereASS(QString fileLyr)
   qDebug() << args;;
   p->execute("./toy2assConverter.ml",args);
 }
+
+void VideoPlayer::dropEvent(QDropEvent * event)
+{
+    const QMimeData* mimeData = event->mimeData();
+
+    // check for our needed mime type, here a file or a list of files
+    if (mimeData->hasUrls())
+    {
+        QStringList pathList;
+        QList<QUrl> urlList = mimeData->urls();
+
+        // extract the local paths of the files
+        for (int i = 0; i < urlList.size() && i < 32; ++i)
+        {
+            pathList.append(urlList.at(i).toLocalFile());
+        }
+
+        // call a function to open the files
+        //openFiles(pathList);
+        qDebug()<<pathList;
+        QString fileEnCours = pathList[0];
+        if (fileEnCours.endsWith(".lyr",Qt::CaseInsensitive)) {
+            lyrFile = fileEnCours;
+            syllabes.open(lyrFile);
+            qDebug() << "ficher lyr recu";
+        }
+        if (fileEnCours.endsWith(".mp4",Qt::CaseInsensitive) || fileEnCours.endsWith(".avi",Qt::CaseInsensitive)
+                || fileEnCours.endsWith(".mkv",Qt::CaseInsensitive) || fileEnCours.endsWith(".flv",Qt::CaseInsensitive)
+                || fileEnCours.endsWith(".ogg",Qt::CaseInsensitive)) {
+            vidFile = fileEnCours;
+            loadMedia(vidFile);
+        }
+    }
+}
+
+void VideoPlayer::dragEnterEvent(QDragEnterEvent * e)
+{
+    e->accept();
+ }
