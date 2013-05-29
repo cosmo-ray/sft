@@ -89,6 +89,7 @@ private slots:
     void dragEnterEvent(QDragEnterEvent * e);
     void loadMedia(const QString &vidFile);
 void setVolume(int vol);
+void affichelaphrase(bool);
 
 
 private:

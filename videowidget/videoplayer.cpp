@@ -166,11 +166,7 @@ void VideoPlayer::openLyr()
          QFileInfo fi(lyrFile);
          informationLyr.setText(fi.fileName());
     }
-    theSentence.setText(
-                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
-                    syllabes.manager()[currentSyllabe].getRelativePosition()
-                    , false)
-    );
+            affichelaphrase(false);
 }
 
 void VideoPlayer::openFile()
@@ -307,21 +303,13 @@ void VideoPlayer::endSyllabe()
     ++currentSyllabe;
     if (currentSyllabe>=syllabes.manager().size())
         --currentSyllabe;
-    theSentence.setText(
-                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
-                    syllabes.manager()[currentSyllabe].getRelativePosition()
-                    , false)
-    );
+            affichelaphrase(false);
 }
 
 void VideoPlayer::startSyllabe() {
     if (!syllabes.isOpen())
         return ;
-    theSentence.setText(
-                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
-                    syllabes.manager()[currentSyllabe].getRelativePosition()
-                    , true)
-    );
+            affichelaphrase(true);
     syllabes.manager()[currentSyllabe].setStart(mediaPlayer.position());
 }
 
@@ -330,11 +318,7 @@ void VideoPlayer::prevSyllabe()
     --currentSyllabe;
     if (currentSyllabe<0)
         currentSyllabe=0;
-    theSentence.setText(
-                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
-                    syllabes.manager()[currentSyllabe].getRelativePosition()
-                    , false)
-    );
+            affichelaphrase(false);
 }
 
 void VideoPlayer::nextSyllabe()
@@ -342,11 +326,7 @@ void VideoPlayer::nextSyllabe()
     ++currentSyllabe;
     if (currentSyllabe>=syllabes.manager().size())
         --currentSyllabe;
-    theSentence.setText(
-                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
-                    syllabes.manager()[currentSyllabe].getRelativePosition()
-                    , false)
-    );
+            affichelaphrase(false);
 }
 
 void VideoPlayer::nextPhrase()
@@ -354,22 +334,14 @@ void VideoPlayer::nextPhrase()
     int i = syllabes.manager()[currentSyllabe].getSentence();
     qDebug() << i;
     if (i<syllabes.sentenceManager().size()-1) { currentSyllabe = syllabes.sentenceManager()[i+1].getFirst(); }
-    theSentence.setText(
-                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
-                    syllabes.manager()[currentSyllabe].getRelativePosition()
-                    , false)
-    );
+            affichelaphrase(false);
 }
 
 void VideoPlayer::prevPhrase()
 {
     int i =syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()-1].getFirst();
     if (i>0) { currentSyllabe = i; }
-    theSentence.setText(
-                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
-                    syllabes.manager()[currentSyllabe].getRelativePosition()
-                    , false)
-    );
+            affichelaphrase(false);
 }
 
 void VideoPlayer::genereASS(QString fileLyr)
@@ -408,11 +380,7 @@ void VideoPlayer::dropEvent(QDropEvent * event)
             qDebug() << "ficher lyr recu";
             QFileInfo fi(lyrFile);
             informationLyr.setText(fi.fileName());
-            theSentence.setText(
-                        syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
-                            syllabes.manager()[currentSyllabe].getRelativePosition()
-                            , false)
-            );
+            affichelaphrase(false);
         }
         if (fileEnCours.endsWith(".mp4",Qt::CaseInsensitive) || fileEnCours.endsWith(".avi",Qt::CaseInsensitive)
                 || fileEnCours.endsWith(".mkv",Qt::CaseInsensitive) || fileEnCours.endsWith(".flv",Qt::CaseInsensitive)
@@ -429,3 +397,11 @@ void VideoPlayer::dragEnterEvent(QDragEnterEvent * e)
 {
     e->accept();
  }
+
+void VideoPlayer::affichelaphrase(bool b) {
+    theSentence.setText(
+                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
+                    syllabes.manager()[currentSyllabe].getRelativePosition()
+                    , b)
+    );
+}
