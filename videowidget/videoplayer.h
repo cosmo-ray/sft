@@ -74,6 +74,7 @@ public slots:
       void setPosition(int position);
       void handleError();
       void setFrameRate(int);
+      void setVolume(int);
       void keyPressEvent(QKeyEvent * e);
       void keyReleaseEvent(QKeyEvent * e);
       void endSyllabe();
@@ -94,6 +95,7 @@ private:
     QLabel theSentence;
     int currentSyllabe;
     QSlider *rateSlider;
+    QSlider *volumeSlider;
     QString lyrFile;
 };
 

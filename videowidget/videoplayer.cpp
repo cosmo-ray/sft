@@ -85,6 +85,12 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
     connect(rateSlider, SIGNAL(sliderMoved(int)),this, SLOT(setFrameRate(int)));
 
+    volumeSlider = new QSlider(Qt::Vertical);
+    volumeSlider->setRange(0, 100);
+    volumeSlider->setValue(100);
+
+    connect(volumeSlider, SIGNAL(sliderMoved(int)),this, SLOT(setVolume(int)));
+
 
     errorLabel = new QLabel;
     errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
@@ -103,6 +109,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     QBoxLayout *layout = new QVBoxLayout;
     QBoxLayout *test = new QHBoxLayout;
     test->addWidget(videoWidget);
+    test->addWidget(volumeSlider);
     test->addWidget(rateSlider);
     layout->addLayout(test);
     layout->addLayout(controlLayout);
@@ -190,6 +197,11 @@ void VideoPlayer::setPosition(int position)
 void VideoPlayer::setFrameRate(int fr)
 {
     mediaPlayer.setPlaybackRate(0.05*fr);
+}
+
+void VideoPlayer::setVolume(int vol)
+{
+    mediaPlayer.setVolume(vol);
 }
 
 void VideoPlayer::handleError()
