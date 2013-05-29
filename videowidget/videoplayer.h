@@ -82,6 +82,8 @@ private slots:
     void startSyllabe();
     void prevSyllabe();
     void nextSyllabe();
+    void nextPhrase();
+    void prevPhrase();
     void genereASS(QString);
     void dropEvent(QDropEvent * e);
     void dragEnterEvent(QDragEnterEvent * e);

@@ -34,6 +34,7 @@ void SyllabeManager::open(const QString &lyrFile)
             _sentenceManager.resize(_sentenceManager.size() + 1);
             Sentence &sen = _sentenceManager[lineIndex];
             sen.sentence.resize(list1.size());
+            sen.setFirst(syllabeIndex);
             for(int i = 0; i < list1.size(); ++i)
             {
                 Syllabe *syl =  &_manager[syllabeIndex];

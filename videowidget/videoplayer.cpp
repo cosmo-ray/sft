@@ -257,6 +257,12 @@ void VideoPlayer::keyPressEvent(QKeyEvent * e)
     if (e->key()==Qt::Key_P) {
         nextSyllabe();
     }
+    if (e->key()==Qt::Key_M) {
+        nextPhrase();
+    }
+    if (e->key()==Qt::Key_L) {
+        prevPhrase();
+    }
     if (e->key()==Qt::Key_I) {
         syllabes.saveFrmToFile(lyrFile);
 	genereASS(lyrFile);
@@ -321,6 +327,30 @@ void VideoPlayer::nextSyllabe()
                     , false)
     );
 }
+
+void VideoPlayer::nextPhrase()
+{
+    int i = syllabes.manager()[currentSyllabe].getSentence();
+    qDebug() << i;
+    if (i<syllabes.sentenceManager().size()-1) { currentSyllabe = syllabes.sentenceManager()[i+1].getFirst(); }
+    theSentence.setText(
+                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
+                    syllabes.manager()[currentSyllabe].getRelativePosition()
+                    , false)
+    );
+}
+
+void VideoPlayer::prevPhrase()
+{
+    int i =syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()-1].getFirst();
+    if (i>0) { currentSyllabe = i; }
+    theSentence.setText(
+                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
+                    syllabes.manager()[currentSyllabe].getRelativePosition()
+                    , false)
+    );
+}
+
 
 void VideoPlayer::genereASS(QString fileLyr)
 {

@@ -38,3 +38,11 @@ QString Sentence::toString(int pos, bool b)
     }
     return (res);
 }
+
+void Sentence::setFirst(int i) {
+    _firtlSyllabe = i;
+}
+
+int Sentence::getFirst() {
+    return (_firtlSyllabe);
+}
