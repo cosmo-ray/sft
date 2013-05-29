@@ -51,7 +51,7 @@ void SyllabeManager::open(const QString &lyrFile)
     _isOpen = true;
 }
 
-void SyllabeManager::saveFrmToFile(QString lyrFile)
+void  SyllabeManager::saveFrmToFile(const QString &lyrFile)
 {
     QFileInfo fi(lyrFile);
     QString frmFile = fi.absolutePath()+ "/" + fi.completeBaseName()+".frm";
@@ -64,6 +64,7 @@ void SyllabeManager::saveFrmToFile(QString lyrFile)
     }
     file.close();
 }
+
 
 QVector<Syllabe> &SyllabeManager::manager()
 {

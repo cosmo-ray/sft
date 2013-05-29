@@ -12,7 +12,7 @@ public:
     bool isOpen();
     QVector<Syllabe> &manager();
     QVector<Sentence> &sentenceManager();
-    void saveFrmToFile(QString lyrFile);
+    void saveFrmToFile(const QString &);
 
     void open(const QString &lyrFile);
 private:

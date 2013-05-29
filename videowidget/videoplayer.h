@@ -67,19 +67,19 @@ public slots:
     void openLyr();
     void play();
 
-private slots:
-    void mediaStateChanged(QMediaPlayer::State state);
-    void positionChanged(qint64 position);
-    void durationChanged(qint64 duration);
-    void setPosition(int position);
-    void handleError();
-    void setFrameRate(int);
-    void keyPressEvent(QKeyEvent * e);
-        void keyReleaseEvent(QKeyEvent * e);
-    void endSyllabe();
-    void startSyllabe();
-    void prevSyllabe();
-    void genereASS(QString);
+    private slots:
+      void mediaStateChanged(QMediaPlayer::State state);
+      void positionChanged(qint64 position);
+      void durationChanged(qint64 duration);
+      void setPosition(int position);
+      void handleError();
+      void setFrameRate(int);
+      void keyPressEvent(QKeyEvent * e);
+      void keyReleaseEvent(QKeyEvent * e);
+      void endSyllabe();
+      void startSyllabe();
+      void prevSyllabe();
+      void genereASS(QString);
 
 private:
     void mousePressEvent(QMouseEvent * e);

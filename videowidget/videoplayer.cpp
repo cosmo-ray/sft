@@ -224,7 +224,7 @@ void VideoPlayer::keyPressEvent(QKeyEvent * e)
     }
     if (e->key()==Qt::Key_I) {
         syllabes.saveFrmToFile(lyrFile);
-        genereASS(lyrFile);
+	genereASS(lyrFile);
     }
 
 }
@@ -280,8 +280,7 @@ void VideoPlayer::genereASS(QString fileLyr)
   QProcess *p = new QProcess();
   QStringList args;
   args << fileLyr;
-  args << QString::number(1000.0,'f',6);
+  args << QString::number(1000.0, 'f', 7);
   qDebug() << args;;
-  //p->setStandardOutputFile("tool/a.ass");
-  p->execute("lecheminvers\\toy2ass.exe",args);
+  p->execute("./toy2assConverter.ml",args);
 }
