@@ -109,6 +109,8 @@ private:
     QString vidFile;
     QLabel _volume;
     QLabel _playrate;
+    QLabel informationVideo;
+    QLabel informationLyr;
 };
 
 #endif

@@ -100,6 +100,17 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     errorLabel = new QLabel;
     errorLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
 
+    QBoxLayout *information1 = new QHBoxLayout;
+    information1->setMargin(0);
+    information1->addWidget(&informationVideo);
+    information1->addWidget(&informationLyr);
+
+    informationVideo.setText("<font color=\"red\">No Video</font>");
+    informationVideo.setFont(QFont("Arial",12,QFont::Bold));
+    informationLyr.setText("<font  color=\"red\">No Lyrics</font>");
+    informationLyr.setFont(QFont("Arial",12,QFont::Bold));
+    theSentence.setFont(QFont("Arial",12));
+
     QBoxLayout *controlLayout = new QHBoxLayout;
     controlLayout->setMargin(0);
     controlLayout->addWidget(playButton);
@@ -122,6 +133,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     ratebox->addWidget(&_playrate);
     ratebox->addWidget(rateSlider);
     test->addLayout(ratebox);
+    layout->addLayout(information1);
     layout->addLayout(test);
     layout->addLayout(controlLayout);
     layout->addLayout(controlLayout2);
@@ -151,7 +163,14 @@ void VideoPlayer::openLyr()
     if (!fileName.isEmpty()) {
         syllabes.open(fileName);
          lyrFile = fileName;
+         QFileInfo fi(lyrFile);
+         informationLyr.setText(fi.fileName());
     }
+    theSentence.setText(
+                syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
+                    syllabes.manager()[currentSyllabe].getRelativePosition()
+                    , false)
+    );
 }
 
 void VideoPlayer::openFile()
@@ -163,6 +182,8 @@ void VideoPlayer::openFile()
     if (!fileName.isEmpty()) {
         vidFile=fileName;
         loadMedia(fileName);
+        QFileInfo fi(vidFile);
+        informationVideo.setText(fi.completeBaseName());
     }
 }
 
@@ -351,7 +372,6 @@ void VideoPlayer::prevPhrase()
     );
 }
 
-
 void VideoPlayer::genereASS(QString fileLyr)
 {
   QProcess *p = new QProcess();
@@ -386,12 +406,21 @@ void VideoPlayer::dropEvent(QDropEvent * event)
             lyrFile = fileEnCours;
             syllabes.open(lyrFile);
             qDebug() << "ficher lyr recu";
+            QFileInfo fi(lyrFile);
+            informationLyr.setText(fi.fileName());
+            theSentence.setText(
+                        syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()].toString(
+                            syllabes.manager()[currentSyllabe].getRelativePosition()
+                            , false)
+            );
         }
         if (fileEnCours.endsWith(".mp4",Qt::CaseInsensitive) || fileEnCours.endsWith(".avi",Qt::CaseInsensitive)
                 || fileEnCours.endsWith(".mkv",Qt::CaseInsensitive) || fileEnCours.endsWith(".flv",Qt::CaseInsensitive)
                 || fileEnCours.endsWith(".ogg",Qt::CaseInsensitive)) {
             vidFile = fileEnCours;
             loadMedia(vidFile);
+            QFileInfo fi(vidFile);
+            informationVideo.setText(fi.fileName());
         }
     }
 }
