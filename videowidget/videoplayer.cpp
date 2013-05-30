@@ -58,7 +58,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 {
     QVideoWidget *videoWidget = new QVideoWidget;
 
-    QAbstractButton *openButton = new QPushButton(tr("Open..."));
+    QAbstractButton *openButton = new QPushButton(tr("Open Video"));
 
     setWindowTitle("Sailor Fuku Timer");
     setWindowIcon(QIcon("resources/sfhd.jpg"));
@@ -121,6 +121,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     controlLayout2->addWidget(openButton);
     controlLayout2->addWidget(&addLyrButton);
     controlLayout2->addWidget(&convert);
+    connect(&convert, SIGNAL(clicked()), this, SLOT(genereAll()));
 
     QBoxLayout *layout = new QVBoxLayout;
     QBoxLayout *test = new QHBoxLayout;
@@ -167,6 +168,12 @@ void VideoPlayer::openLyr()
          informationLyr.setText(fi.fileName());
     }
             affichelaphrase(false);
+}
+
+void VideoPlayer::genereAll()
+{
+  syllabes.saveFrmToFile(lyrFile);
+  genereASS(lyrFile);  
 }
 
 void VideoPlayer::openFile()
@@ -281,8 +288,7 @@ void VideoPlayer::keyPressEvent(QKeyEvent * e)
         prevPhrase();
     }
     if (e->key()==Qt::Key_I) {
-        syllabes.saveFrmToFile(lyrFile);
-	genereASS(lyrFile);
+      genereAll();
     }
 
 }
@@ -350,7 +356,6 @@ void VideoPlayer::genereASS(QString fileLyr)
   QStringList args;
   args << fileLyr;
   args << QString::number(1000.0, 'f', 7);
-  qDebug() << args;;
   p->execute("./toy2assConverter.ml",args);
 }
 

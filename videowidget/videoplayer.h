@@ -77,7 +77,7 @@ private slots:
     void handleError();
     void setFrameRate(int);
     void keyPressEvent(QKeyEvent * e);
-        void keyReleaseEvent(QKeyEvent * e);
+    void keyReleaseEvent(QKeyEvent * e);
     void endSyllabe();
     void startSyllabe();
     void prevSyllabe();
@@ -88,9 +88,9 @@ private slots:
     void dropEvent(QDropEvent * e);
     void dragEnterEvent(QDragEnterEvent * e);
     void loadMedia(const QString &vidFile);
-void setVolume(int vol);
-void affichelaphrase(bool);
-
+    void setVolume(int vol);
+    void affichelaphrase(bool);
+    void genereAll(void);
 
 private:
     void mousePressEvent(QMouseEvent * e);
