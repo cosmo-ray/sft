@@ -346,7 +346,7 @@ void VideoPlayer::nextPhrase()
 void VideoPlayer::prevPhrase()
 {
     int i =syllabes.sentenceManager()[syllabes.manager()[currentSyllabe].getSentence()-1].getFirst();
-    if (i>0) { currentSyllabe = i; }
+    if (syllabes.manager()[currentSyllabe].getSentence()>0) { currentSyllabe = i; }
             affichelaphrase(false);
 }
 
@@ -356,7 +356,7 @@ void VideoPlayer::genereASS(QString fileLyr)
   QStringList args;
   args << fileLyr;
   args << QString::number(1000.0, 'f', 6);
-  p->execute("./toy2ass",args);
+  p->execute("toy2ass",args);
 }
 
 void VideoPlayer::dropEvent(QDropEvent * event)
