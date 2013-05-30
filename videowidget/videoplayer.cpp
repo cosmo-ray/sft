@@ -356,7 +356,7 @@ void VideoPlayer::genereASS(QString fileLyr)
   QStringList args;
   args << fileLyr;
   args << QString::number(1000.0, 'f', 6);
-  p->execute("toy2ass",args);
+  p->startDetached("./toy2ass",args);
 }
 
 void VideoPlayer::dropEvent(QDropEvent * event)
