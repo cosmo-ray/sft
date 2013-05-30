@@ -355,8 +355,8 @@ void VideoPlayer::genereASS(QString fileLyr)
   QProcess *p = new QProcess();
   QStringList args;
   args << fileLyr;
-  args << QString::number(1000.0, 'f', 7);
-  p->execute("./toy2assConverter.ml",args);
+  args << QString::number(1000.0, 'f', 6);
+  p->execute("./toy2ass",args);
 }
 
 void VideoPlayer::dropEvent(QDropEvent * event)

@@ -2,6 +2,7 @@
 #include <QDebug>
 
 Syllabe::Syllabe()
+  : _start(0), _end(0)
 {
 }
 
