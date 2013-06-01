@@ -254,17 +254,34 @@ void VideoPlayer::handleError()
     errorLabel->setText("Error: " + mediaPlayer.errorString());
 }
 
-void VideoPlayer::mousePressEvent(QMouseEvent *)
-{
-    startSyllabe();
-    qDebug() << "not release" << mediaPlayer.position();
+void VideoPlayer::wheelEvent(QWheelEvent * e) {
+    if(e->orientation() == Qt::Vertical) {
+        int numDegrees = e->delta() / 8;
+             int numSteps = numDegrees / 15;
+             if (numSteps==1) {
+                 nextSyllabe();
+             } else if (numSteps==-1) {
+                 prevSyllabe();
+             }
+    }
 }
 
-void VideoPlayer::mouseReleaseEvent(QMouseEvent *)
+void VideoPlayer::mousePressEvent(QMouseEvent * e)
 {
+    if (e->button()==Qt::LeftButton) {
+    startSyllabe();
+    qDebug() << "not release" << mediaPlayer.position();
+    } else if (e->button()==Qt::RightButton) {
+         mediaPlayer.setPosition(mediaPlayer.position()-2000);
+    }
+}
 
+void VideoPlayer::mouseReleaseEvent(QMouseEvent * e)
+{
+if (e->button()==Qt::LeftButton) {
     qDebug() << "release" << mediaPlayer.position();
     endSyllabe();
+}
 }
 
 void VideoPlayer::keyPressEvent(QKeyEvent * e)

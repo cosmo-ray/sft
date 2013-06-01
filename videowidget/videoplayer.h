@@ -91,6 +91,7 @@ private slots:
     void setVolume(int vol);
     void affichelaphrase(bool);
     void genereAll(void);
+    void wheelEvent(QWheelEvent * e);
 
 private:
     void mousePressEvent(QMouseEvent * e);
