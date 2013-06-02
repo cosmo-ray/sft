@@ -48,6 +48,7 @@
 #include <syllabemanager.h>
 #include <QPushButton>
 #include <QLabel>
+#include <parolestextedit.h>
 
 QT_BEGIN_NAMESPACE
 class QAbstractButton;
@@ -92,6 +93,9 @@ private slots:
     void affichelaphrase(bool);
     void genereAll(void);
     void wheelEvent(QWheelEvent * e);
+    void autodecoupe(const QString &txt);
+    void sauverLyrics();
+    void fermerLyrics();
 
 private:
     void mousePressEvent(QMouseEvent * e);
@@ -113,6 +117,9 @@ private:
     QLabel _playrate;
     QLabel informationVideo;
     QLabel informationLyr;
+    parolestextedit paroles;
+    QPushButton saveLyr;
+    QPushButton fermeLyr;
 };
 
 #endif

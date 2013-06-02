@@ -55,6 +55,8 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     , errorLabel(0)
     , theSentence("open a lyr file and a video")
     , currentSyllabe(0)
+    , saveLyr("Sauver")
+    , fermeLyr("Cacher")
 {
     QVideoWidget *videoWidget = new QVideoWidget;
 
@@ -73,6 +75,10 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
     connect(playButton, SIGNAL(clicked()),
             this, SLOT(play()));
+
+    connect(&saveLyr, SIGNAL(clicked()),this,SLOT(sauverLyrics()));
+    connect(&fermeLyr, SIGNAL(clicked()),this,SLOT(fermerLyrics()));
+
 
     positionSlider = new QSlider(Qt::Horizontal);
     positionSlider->setRange(0, 0);
@@ -140,7 +146,16 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     layout->addLayout(controlLayout2);
     layout->addWidget(&theSentence);
     layout->addWidget(errorLabel);
-
+    QBoxLayout * parolesbox = new QVBoxLayout;
+    QBoxLayout * parolesboutonbox = new QHBoxLayout;
+    parolesbox->addWidget(&paroles);
+    parolesboutonbox->addWidget(&saveLyr);
+    parolesboutonbox->addWidget(&fermeLyr);
+    parolesbox->addLayout(parolesboutonbox);
+    layout->addLayout(parolesbox);
+paroles.setVisible(false);
+saveLyr.setVisible(false);
+fermeLyr.setVisible(false);
     setLayout(layout);
 
     mediaPlayer.setVideoOutput(videoWidget);
@@ -289,7 +304,7 @@ void VideoPlayer::keyPressEvent(QKeyEvent * e)
     if (e->key()==Qt::Key_Backspace) {
         mediaPlayer.setPosition(mediaPlayer.position()-2000);
     }
-    if (e->key()==Qt::Key_T) {
+    if (e->key()==Qt::Key_T && !e->isAutoRepeat()) {
         startSyllabe();
     }
     if (e->key()==Qt::Key_O) {
@@ -307,12 +322,22 @@ void VideoPlayer::keyPressEvent(QKeyEvent * e)
     if (e->key()==Qt::Key_I) {
       genereAll();
     }
-
+    if (e->key()==Qt::Key_Space) {
+        play();
+    }
+    if (e->key()==Qt::Key_U) {
+        mediaPlayer.setPosition(mediaPlayer.position()+2000);
+    }
+    if (e->key()==Qt::Key_H && e->modifiers()==Qt::ControlModifier) {
+        fermeLyr.setVisible(!fermeLyr.isVisible());
+        saveLyr.setVisible(!saveLyr.isVisible());
+        paroles.setVisible(!paroles.isVisible());
+    }
 }
 
 void VideoPlayer::keyReleaseEvent(QKeyEvent * e)
 {
-    if (e->key()==Qt::Key_T) {
+    if (e->key()==Qt::Key_T && !e->isAutoRepeat()) {
         endSyllabe();
     }
 
@@ -372,7 +397,9 @@ void VideoPlayer::genereASS(QString fileLyr)
   QProcess *p = new QProcess();
   QStringList args;
   args << fileLyr;
+  args << vidFile;
   args << QString::number(1000.0, 'f', 6);
+ // qDebug() << args;
   p->startDetached("./toy2ass",args);
 }
 
@@ -403,6 +430,8 @@ void VideoPlayer::dropEvent(QDropEvent * event)
             QFileInfo fi(lyrFile);
             informationLyr.setText(fi.fileName());
             affichelaphrase(false);
+        } else if (fileEnCours.endsWith(".txt",Qt::CaseInsensitive)) {
+            autodecoupe(fileEnCours);
         }
         if (fileEnCours.endsWith(".mp4",Qt::CaseInsensitive) || fileEnCours.endsWith(".avi",Qt::CaseInsensitive)
                 || fileEnCours.endsWith(".mkv",Qt::CaseInsensitive) || fileEnCours.endsWith(".flv",Qt::CaseInsensitive)
@@ -426,4 +455,55 @@ void VideoPlayer::affichelaphrase(bool b) {
                     syllabes.manager()[currentSyllabe].getRelativePosition()
                     , b)
     );
+}
+
+void VideoPlayer::autodecoupe(const QString &txt) {
+    fermeLyr.setVisible(true);
+    saveLyr.setVisible(true);
+    QFileInfo fi(txt);
+    QProcess *p = new QProcess();
+    QStringList args;
+    QByteArray ba;
+    args << txt;
+    p->start("./txt2lyr",args);
+    p->waitForFinished();
+    ba = p->readAllStandardOutput();
+    //lyrFile = fi.completeBaseName()+".lyr";
+     //   QFileInfo fi2(lyrFile);
+   //     qDebug() << fi2.exists();
+     //     syllabes.open(lyrFile);
+
+    //qDebug() << "ficher lyr converti" << ba;
+
+   // informationLyr.setText(fi2.fileName());
+   // affichelaphrase(false);
+        paroles.setText(QString(ba));
+        paroles.setVisible(true);
+}
+
+void VideoPlayer::sauverLyrics() {
+    if (!lyrFile.endsWith(".lyr")) {
+        lyrFile = QFileDialog::getSaveFileName(this, tr("Save Lyrics"),
+                                               QDir::homePath(),
+                                               tr("Playlist (*.lyr)"));
+    }
+    QFile file(lyrFile);
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+    out << paroles.toPlainText();
+//    for(int i = 0; i < _manager.size(); ++i) {
+//        out << _manager[i].getStart() << " " << _manager[i].getEnd() << "\n";
+//    }
+    file.close();
+    syllabes.open(lyrFile);
+    QFileInfo fi(lyrFile);
+    informationLyr.setText(fi.fileName());
+    affichelaphrase(false);
+    fermerLyrics();
+}
+
+void VideoPlayer::fermerLyrics() {
+    fermeLyr.setVisible(false);
+    saveLyr.setVisible(false);
+    paroles.setVisible(false);
 }
