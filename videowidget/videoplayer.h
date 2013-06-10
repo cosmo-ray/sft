@@ -98,6 +98,9 @@ private slots:
     void fermerLyrics();
 
 private:
+    bool isLyr(const QString &);
+    bool isTxt(const QString &);
+    void openLyrOrTxt(const QString &fileEnCours);
     void mousePressEvent(QMouseEvent * e);
     void mouseReleaseEvent(QMouseEvent * e);
     QMediaPlayer mediaPlayer;

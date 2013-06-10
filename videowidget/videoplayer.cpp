@@ -176,14 +176,22 @@ VideoPlayer::~VideoPlayer()
 void VideoPlayer::openLyr()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Movie"),QDir::homePath());
-    if (!fileName.isEmpty()) {
-        syllabes.open(fileName);
-         lyrFile = fileName;
-         QFileInfo fi(lyrFile);
-         informationLyr.setText(fi.fileName());
-    }
-            affichelaphrase(false);
+    openLyrOrTxt(fileName);
 }
+
+void VideoPlayer::openLyrOrTxt(const QString &fileName)
+{
+  if (isLyr(fileName)) {
+    lyrFile = fileName;
+    syllabes.open(lyrFile);
+    QFileInfo fi(lyrFile);
+    informationLyr.setText(fi.fileName());
+    affichelaphrase(false);
+  } else if (isTxt(fileName)) {
+    autodecoupe(fileName);
+  }
+}
+
 
 void VideoPlayer::genereAll()
 {
@@ -423,16 +431,7 @@ void VideoPlayer::dropEvent(QDropEvent * event)
         //openFiles(pathList);
         qDebug()<<pathList;
         QString fileEnCours = pathList[0];
-        if (fileEnCours.endsWith(".lyr",Qt::CaseInsensitive)) {
-            lyrFile = fileEnCours;
-            syllabes.open(lyrFile);
-            qDebug() << "ficher lyr recu";
-            QFileInfo fi(lyrFile);
-            informationLyr.setText(fi.fileName());
-            affichelaphrase(false);
-        } else if (fileEnCours.endsWith(".txt",Qt::CaseInsensitive)) {
-            autodecoupe(fileEnCours);
-        }
+	openLyrOrTxt(fileEnCours);
         if (fileEnCours.endsWith(".mp4",Qt::CaseInsensitive) || fileEnCours.endsWith(".avi",Qt::CaseInsensitive)
                 || fileEnCours.endsWith(".mkv",Qt::CaseInsensitive) || fileEnCours.endsWith(".flv",Qt::CaseInsensitive)
                 || fileEnCours.endsWith(".ogg",Qt::CaseInsensitive)) {
@@ -443,6 +442,17 @@ void VideoPlayer::dropEvent(QDropEvent * event)
         }
     }
 }
+
+bool VideoPlayer::isLyr(const QString &s)
+{
+  return (s.endsWith(".lyr",Qt::CaseInsensitive));
+}
+
+bool VideoPlayer::isTxt(const QString &s)
+{
+  return (s.endsWith(".lyr",Qt::CaseInsensitive));
+}
+
 
 void VideoPlayer::dragEnterEvent(QDragEnterEvent * e)
 {
