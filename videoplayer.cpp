@@ -50,6 +50,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     , mediaPlayer(0, QMediaPlayer::VideoSurface)
     , playButton(0)
     , addLyrButton("Open lyrics")
+    , addReloadLyr("reload lyrics")
     , convert("convert")
     , positionSlider(0)
     , errorLabel(0)
@@ -126,6 +127,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     controlLayout2->setMargin(0);
     controlLayout2->addWidget(openButton);
     controlLayout2->addWidget(&addLyrButton);
+    controlLayout2->addWidget(&addReloadLyr);
     controlLayout2->addWidget(&convert);
     connect(&convert, SIGNAL(clicked()), this, SLOT(genereAll()));
 
