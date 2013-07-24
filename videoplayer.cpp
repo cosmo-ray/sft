@@ -58,6 +58,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
     , currentSyllabe(0)
     , saveLyr("Sauver")
     , fermeLyr("Cacher")
+    , fileName("")
 {
     QVideoWidget *videoWidget = new QVideoWidget;
 
@@ -69,6 +70,7 @@ VideoPlayer::VideoPlayer(QWidget *parent)
 
     connect(openButton, SIGNAL(clicked()), this, SLOT(openFile()));
     connect(&addLyrButton, SIGNAL(clicked()), this, SLOT(openLyr()));
+    connect(&addReloadLyr, SIGNAL(clicked()), this, SLOT(reloadLyr()));
 
     playButton = new QPushButton;
     playButton->setEnabled(false);
@@ -175,9 +177,15 @@ VideoPlayer::~VideoPlayer()
     delete rateSlider;
 }
 
+void VideoPlayer::reloadLyr()
+{
+  if (fileName != "")
+    openLyrOrTxt(fileName);
+}
+
 void VideoPlayer::openLyr()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Movie"),QDir::homePath());
+    fileName = QFileDialog::getOpenFileName(this, tr("Open Movie"),QDir::homePath());
     openLyrOrTxt(fileName);
 }
 

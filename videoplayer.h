@@ -66,6 +66,7 @@ public:
 public slots:
     void openFile();
     void openLyr();
+    void reloadLyr();
     void play();
 
 
@@ -124,6 +125,7 @@ private:
     parolestextedit paroles;
     QPushButton saveLyr;
     QPushButton fermeLyr;
+    QString	fileName;
 };
 
 #endif
