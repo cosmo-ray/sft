@@ -104,6 +104,9 @@ private:
     void openLyrOrTxt(const QString &fileEnCours);
     void mousePressEvent(QMouseEvent * e);
     void mouseReleaseEvent(QMouseEvent * e);
+    const QString &changeBaseNameToLyr(QString &originalStr);
+
+
     QMediaPlayer mediaPlayer;
     QAbstractButton *playButton;
     QPushButton addLyrButton;

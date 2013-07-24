@@ -186,6 +186,8 @@ void VideoPlayer::reloadLyr()
 void VideoPlayer::openLyr()
 {
     fileName = QFileDialog::getOpenFileName(this, tr("Open Movie"),QDir::homePath());
+    if (!isLyr(fileName))
+      fileName = "";
     openLyrOrTxt(fileName);
 }
 
@@ -212,13 +214,15 @@ void VideoPlayer::openFile()
 {
     errorLabel->setText("");
 
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Movie"),QDir::homePath());
+    QString videoName = QFileDialog::getOpenFileName(this, tr("Open Movie"),QDir::homePath());
 
-    if (!fileName.isEmpty()) {
-        vidFile=fileName;
-        loadMedia(fileName);
+    if (!videoName.isEmpty()) {
+        vidFile=videoName;
+        loadMedia(videoName);
         QFileInfo fi(vidFile);
         informationVideo.setText(fi.completeBaseName());
+	if (isLyr(changeBaseNameToLyr(videoName)))
+	  openLyrOrTxt(videoName);
     }
 }
 
@@ -461,6 +465,10 @@ bool VideoPlayer::isTxt(const QString &s)
   return (s.endsWith(".txt",Qt::CaseInsensitive));
 }
 
+const QString &VideoPlayer::changeBaseNameToLyr(QString &originalStr)
+{
+  return (originalStr.replace(originalStr.lastIndexOf("."), 10, ".lyr"));
+}
 
 void VideoPlayer::dragEnterEvent(QDragEnterEvent * e)
 {
