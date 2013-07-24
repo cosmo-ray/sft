@@ -40,6 +40,7 @@
 
 #include "videoplayer.h"
 
+#include <unistd.h>
 #include <QDebug>
 #include <QtWidgets>
 #include <qvideowidget.h>
@@ -221,7 +222,9 @@ void VideoPlayer::openFile()
         loadMedia(videoName);
         QFileInfo fi(vidFile);
         informationVideo.setText(fi.completeBaseName());
-	if (isLyr(changeBaseNameToLyr(videoName)))
+	changeBaseNameToLyr(videoName);
+	QFile lyr(videoName);
+	if (lyr.exists())
 	  openLyrOrTxt(videoName);
     }
 }
@@ -467,13 +470,15 @@ bool VideoPlayer::isTxt(const QString &s)
 
 const QString &VideoPlayer::changeBaseNameToLyr(QString &originalStr)
 {
-  return (originalStr.replace(originalStr.lastIndexOf("."), 10, ".lyr"));
+  int idx = originalStr.lastIndexOf(".");
+  originalStr.replace(idx, 4, ".lyr");
+  return (originalStr);
 }
 
 void VideoPlayer::dragEnterEvent(QDragEnterEvent * e)
 {
     e->accept();
- }
+}
 
 void VideoPlayer::affichelaphrase(bool b) {
     theSentence.setText(
