@@ -17,7 +17,7 @@ the file containing the lyrics, with sylabes separator.
 example:
 ```
 &ku&ru&shi&ku &ta&t&te &ka&na&shi&ku &ta&t&te
-&CO&UR&T &wo &na&ka &de&wa &he&i&ki &na&no
+&CO&UR&T &no &na&ka &de&wa &he&i&ki &na&no
 ```
 
 ## using SFT
